@@ -6,7 +6,6 @@ import datetime
 
 YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 2)]
 
-
 class Genre(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=40)
@@ -18,6 +17,19 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
     
+    
+class Actor(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    full_name = models.CharField(max_length=70)
+    date_of_birth = models.DateField()
+    
+    class Meta:
+        db_table = "actor"
+        ordering = ['full_name']
+        
+    def __str__(self):
+        return self.full_name
+
 
 class Movie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
