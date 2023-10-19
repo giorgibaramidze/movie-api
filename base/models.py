@@ -22,6 +22,7 @@ class Actor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     full_name = models.CharField(max_length=70)
     date_of_birth = models.DateField()
+    image = models.ImageField(upload_to='images/actors')
     
     class Meta:
         db_table = "actor"
@@ -31,14 +32,31 @@ class Actor(models.Model):
         return self.full_name
 
 
+class Director(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    full_name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images/director')
+    date_of_birth = models.DateField()
+
+    class Meta:
+        db_table = "director"
+        ordering = ['full_name']
+
+    def __str__(self):
+        return self.full_name
+
+
 class Movie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='author', null=True)
     title = models.CharField(max_length=100)
+    banner = models.ImageField(upload_to='images/movies')
     description = models.TextField(max_length=255)
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     country = CountryField(multiple=True)
+    director = models.ManyToManyField(Director)
     genre = models.ManyToManyField(Genre)
+    actor = models.ManyToManyField(Actor)
     
     class Meta:
         db_table = "movie"
