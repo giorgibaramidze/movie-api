@@ -4,8 +4,20 @@ from django_countries.fields import CountryField
 from accounts.models import Account
 import datetime
 
-YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 4)]
+YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 2)]
 
+
+class Genre(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=40)
+    
+    class Meta:
+        db_table = "genre"
+        ordering = ['name']
+        
+    def __str__(self):
+        return self.name
+    
 
 class Movie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -14,4 +26,12 @@ class Movie(models.Model):
     description = models.TextField(max_length=255)
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     country = CountryField(multiple=True)
+    genre = models.ManyToManyField(Genre)
+    
+    class Meta:
+        db_table = "movie"
+        ordering = ['-id']
+        
+    def __str__(self):
+        return self.title
     
