@@ -65,3 +65,18 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
     
+
+class Comment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    reply = models.ForeignKey('Comment', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
+    comment = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "Comment"
+        ordering = ['id']
+        
+    def __str__(self):
+        return self.title
