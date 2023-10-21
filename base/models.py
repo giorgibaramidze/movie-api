@@ -1,6 +1,5 @@
 from django.db import models
 import uuid
-from django_countries.fields import CountryField
 from accounts.models import Account
 import datetime
 
@@ -46,14 +45,26 @@ class Director(models.Model):
         return self.full_name
 
 
+class Country(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=30)
+    
+    class Meta:
+        db_table = "country"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class Movie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='author', null=True)
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='author', blank=True, null=True)
     title = models.CharField(max_length=100)
     banner = models.ImageField(upload_to='images/movies')
     description = models.TextField(max_length=255)
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    country = CountryField(multiple=True)
+    country = models.ManyToManyField(Country)
     director = models.ManyToManyField(Director)
     genre = models.ManyToManyField(Genre)
     actor = models.ManyToManyField(Actor)
@@ -75,7 +86,7 @@ class Comment(models.Model):
     time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = "Comment"
+        db_table = "comment"
         ordering = ['id']
         
     def __str__(self):

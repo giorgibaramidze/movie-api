@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django_filters',
     'base',
     'rest_framework',
-    'accounts',
-    'django_countries'
+    'accounts'
 ]
 
 MIDDLEWARE = [
