@@ -4,6 +4,13 @@ from .models import Movie
 from .serializers import MovieSerializer
 
 
-class MovieList(generics.ListCreateAPIView):
+class MovieListView(generics.ListCreateAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
+class MovieDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    
+    
