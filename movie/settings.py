@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n48-1(!+h9@%*=(3l1x#k&)6j&_!l26*70^!5w1($b!o%wm7b0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django_filters',
     'base',
     'rest_framework',
-    'accounts'
+    'accounts',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,12 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 WSGI_APPLICATION = 'movie.wsgi.application'
 
