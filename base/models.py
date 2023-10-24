@@ -6,6 +6,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 2)]
+TYPE_CHOICES = [
+    ('movie', 'movie'),
+    ('trailer', 'trailer'),
+    ('serial', 'serial')
+]
 
 class Genre(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -63,6 +68,7 @@ class Movie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, related_name='author', blank=True, null=True)
     title = models.CharField(max_length=100)
+    type = models.CharField(max_length=60, choices=TYPE_CHOICES, default='movie')
     banner = models.ImageField(upload_to='images/movies')
     description = models.TextField(max_length=255)
     imdb = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(10.0)], default=0)
