@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 class AccountManager(BaseUserManager):
@@ -33,8 +34,8 @@ class AccountManager(BaseUserManager):
         return user
 
 class Account(AbstractBaseUser, PermissionsMixin):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, validators=[MinLengthValidator(2)])
+    last_name = models.CharField(max_length=50, validators=[MinLengthValidator(2)])
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
 
