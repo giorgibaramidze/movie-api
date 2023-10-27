@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from itertools import chain
 from rest_framework import generics
 from .models import Movie, Actor
-from .serializers import MovieSerializer, MovieDetailsSerializer, MovieListSerializer, ActorSerializer
+from .serializers import MovieSerializer, MovieDetailsSerializer, ActorSerializer, MovieListSerializer
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class MainListView(generics.ListAPIView):
@@ -33,5 +34,13 @@ class MainListView(generics.ListAPIView):
 class MovieDetailsView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieDetailsSerializer
+    
+    
+class MovieListView(generics.ListAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieListSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['genre', 'year', 'type', 'country', 'imdb']
+    ordering_fields = ['year', 'imdb']
     
     

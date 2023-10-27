@@ -36,23 +36,32 @@ class ActorSerializer(serializers.ModelSerializer):
 
 
 
+# ------------------------------- movie serializers----------------------- 
+
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ["id", "title", "type", "year", "imdb", "banner"]      
     
-
-
-class MovieDetailsSerializer(serializers.Serializer):
+    
+class BaseMovieSerializer(serializers.Serializer):
     country = CountrySerializer(many=True)
     director = DirectorSerializer(many=True)
     genre = GenreSerializer(many=True)
     actor = ActorSerializer(many=True)
     comment = serializers.SerializerMethodField()
+
+class MovieDetailsSerializer(serializers.ModelSerializer, BaseMovieSerializer):
+    class Meta:
+        model = Movie
+        exclude = ['user']
     
     def get_comment(self, obj):
         return CommentSerializer(obj.movie_comment.filter(reply__isnull=True), many=True).data
-    
 
-class MovieListSerializer(serializers.ModelSerializer, MovieDetailsSerializer):
-    pass
+
+class MovieListSerializer(serializers.ModelSerializer, BaseMovieSerializer):
+    comment = None
+    class Meta:
+        model = Movie
+        exclude = ['user']
