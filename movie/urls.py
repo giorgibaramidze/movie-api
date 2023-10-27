@@ -8,5 +8,4 @@ urlpatterns = [
     path('api/', include('base.urls')),
     path('api/', include('accounts.urls')),
     path('api/', include('djoser.urls')),
-    path('api/', include('djoser.urls.jwt'))
 ]
