@@ -4,6 +4,7 @@ from .models import Movie, Actor
 from .serializers import MovieSerializer, MovieDetailsSerializer, ActorSerializer, MovieListSerializer
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from .filters import MovieFilter
 from rest_framework import filters
 
 
@@ -40,7 +41,7 @@ class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieListSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['genre', 'year', 'type', 'country', 'imdb']
+    filterset_class = MovieFilter
     ordering_fields = ['year', 'imdb']
     
     
