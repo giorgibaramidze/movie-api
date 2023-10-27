@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from rest_framework import generics
 from .models import Movie, Actor
-from .serializers import MovieSerializer, MovieDetailsSerializer, ActorSerializer, MovieListSerializer
+from .serializers.movie_serializer import MovieSerializer, MovieDetailsSerializer, MovieListSerializer
+from .serializers.actor_serializer import ActorSerializer, ActorDetailsSerializer
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import MovieFilter
 from rest_framework import filters
 
-
+# ----------------------movie views---------------------------
 class MainListView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
@@ -32,6 +33,7 @@ class MainListView(generics.ListAPIView):
             })
 
 
+
 class MovieDetailsView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieDetailsSerializer
@@ -45,3 +47,14 @@ class MovieListView(generics.ListAPIView):
     ordering_fields = ['year', 'imdb']
     
     
+# ----------------------actor views------------
+
+
+class ActorListView(generics.ListAPIView):
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+    
+
+class ActorDetailsView(generics.RetrieveAPIView):
+    queryset = Actor.objects.all()
+    serializer_class =  ActorDetailsSerializer

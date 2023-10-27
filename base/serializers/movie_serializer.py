@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Movie, Actor, Country, Director, Genre, Comment
+from ..models import Movie, Country, Director, Genre, Comment
+from .actor_serializer import ActorSerializer
+
 
 class CommentSerializer(serializers.ModelSerializer):
     reply = serializers.SerializerMethodField()
@@ -26,12 +28,6 @@ class DirectorSerializer(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = "__all__"
-        
-        
-class ActorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Actor
         fields = "__all__"
 
 
